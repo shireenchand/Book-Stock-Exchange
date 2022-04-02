@@ -63,13 +63,12 @@ with open("Authors", "rb") as fp:
 #   				idx += 1
 
 # st.sidebar.write("Enter Book Name")
-
+book_name = st.sidebar.text_input(label="Enter Book name")
 if book_name == "":
 		book_name = "The Testament"
-		
+
 try:
 	st.sidebar.markdown("<h1 style='text-align: center; color: #ECB365;'>BOOK STOCK EXCHANGE</h1>", unsafe_allow_html=True)
-	book_name = st.sidebar.text_input(label="Enter Book name")
 	i = list(names).index(book_name)
 	url = dictionary[book_name]
 	st.sidebar.write(f"Author: {authors[names[i]]}")
