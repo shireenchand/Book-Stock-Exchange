@@ -63,35 +63,52 @@ with open("Authors", "rb") as fp:
 #   				idx += 1
 
 # st.sidebar.write("Enter Book Name")
-st.sidebar.markdown("<h1 style='text-align: center; color: #ECB365;'>BOOK STOCK EXCHANGE</h1>", unsafe_allow_html=True)
-book_name = st.sidebar.text_input(label="Enter Book name")
+
 if book_name == "":
-	book_name = "The Testament"
-i = list(names).index(book_name)
-url = dictionary[book_name]
-st.sidebar.write(f"Author: {authors[names[i]]}")
-response = requests.get(url)
-img = Image.open(BytesIO(response.content))
-newsize = (300, 400)
-img = img.resize(newsize)
-st.sidebar.image(img,caption=names[i])
-if st.sidebar.button("See Similar Books",key=names[i]):
-	print(names[i])
-	distances, suggestions = model.kneighbors(u.iloc[i, :].values.reshape(1, -1))
-	idx = 1
-	for i in range(5):
-		print(u.index[suggestions[0,i]])
-		t = u.index[suggestions[0,i]]
-		st.subheader(f"{idx}. {u.index[suggestions[0,i]]}")
-		url = dictionary[t]
-		i = list(names).index(t)
-		st.write(f"Author: {authors[names[i]]}")
-		response = requests.get(url)
-		img = Image.open(BytesIO(response.content))
-		newsize = (300, 400)
-		img = img.resize(newsize)
-		st.image(img,caption=names[i])
-		idx += 1
+		book_name = "The Testament"
+		
+try:
+	st.sidebar.markdown("<h1 style='text-align: center; color: #ECB365;'>BOOK STOCK EXCHANGE</h1>", unsafe_allow_html=True)
+	book_name = st.sidebar.text_input(label="Enter Book name")
+	i = list(names).index(book_name)
+	url = dictionary[book_name]
+	st.sidebar.write(f"Author: {authors[names[i]]}")
+	response = requests.get(url)
+	img = Image.open(BytesIO(response.content))
+	newsize = (300, 400)
+	img = img.resize(newsize)
+	st.sidebar.image(img,caption=names[i])
+	if st.sidebar.button("See Similar Books",key=names[i]):
+		print(names[i])
+		distances, suggestions = model.kneighbors(u.iloc[i, :].values.reshape(1, -1))
+		idx = 1
+		for i in range(5):
+			print(u.index[suggestions[0,i]])
+			t = u.index[suggestions[0,i]]
+			st.subheader(f"{idx}. {u.index[suggestions[0,i]]}")
+			url = dictionary[t]
+			i = list(names).index(t)
+			st.write(f"Author: {authors[names[i]]}")
+			response = requests.get(url)
+			img = Image.open(BytesIO(response.content))
+			newsize = (300, 400)
+			img = img.resize(newsize)
+			st.image(img,caption=names[i])
+			idx += 1
+
+except Exception as e:
+	st.markdown("<h1 style='text-align: center; color: black;'>COULD NOT FIND THE BOOK!!!</h1>", unsafe_allow_html=True)
+	st.markdown("<h2 style='text-align: center; color: black;'>Check the spelling or add the name of the Author as well</h2>", unsafe_allow_html=True)
+	print(e)
+
+
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 
 
